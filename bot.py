@@ -13,6 +13,7 @@ class Bot():
 
 
     def run_setup(self):
+        self.send_bot_data(f"new-game")
         self.send_bot_data(f"set-depth/{self.depth}")
         self.send_bot_data(f"set-budgetmillis/{self.budget_millis}")
         self.send_bot_data(f"set-maxPlies/{self.max_plies}")

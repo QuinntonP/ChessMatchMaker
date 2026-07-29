@@ -27,11 +27,12 @@ class Game:
     def make_move(self, bot):
         print(self.fen)
         print("=" * 40)
-        print(f"{bot.get_is_white_as_string()}'s Move")
+        # print(f"{bot.get_is_white_as_string()}'s Move")
 
         # This waits until the white bot responds
         self.fen = bot.send_bot_data(
             f"make-move/?FEN={self.fen}"
         )
 
-        self.sounds["move-piece"].play()
+        if self.play_sounds:
+            self.sounds["move-piece"].play()
