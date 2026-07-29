@@ -1,33 +1,37 @@
-# game.py
-
 class Game:
-    def __init__(self, white_bot, black_bot, fen):
+    def __init__(self, sounds, play_sounds, white_bot, black_bot, fen):
+        self.sounds = sounds
+        self.play_sounds = play_sounds
         self.white_bot = white_bot
         self.black_bot = black_bot
         self.fen = fen
 
+
     def start_game(self):
         print("Starting game...")
 
-        while (
-            self.white_bot.send_bot_data("get-checkmate") != "checkmate"
-            and self.black_bot.send_bot_data("get-checkmate") != "checkmate"
-        ):
-            print(self.fen)
-            print("=" * 40)
-            print("White's Move")
+        count = 0
+        bot = self.white_bot
 
-            # This waits until the white bot responds
-            self.fen = self.white_bot.send_bot_data(
-                f"make-move/?FEN={self.fen}"
-            )
+        while (self.white_bot.send_bot_data("get-checkmate") != "checkmate" and self.black_bot.send_bot_data("get-checkmate") != "checkmate"):
+            if count % 2 == 0:
+                bot = self.white_bot
+            else:
+                bot = self.black_bot
 
-            print("=" * 40)
-            print("Black's Move")
-
-            # This waits until the black bot responds
-            self.fen = self.black_bot.send_bot_data(
-                f"make-move/?FEN={self.fen}"
-            )
+            self.make_move(bot)
 
         print("Game is over")
+
+
+    def make_move(self, bot):
+        print(self.fen)
+        print("=" * 40)
+        print(f"{bot.get_is_white_as_string()}'s Move")
+
+        # This waits until the white bot responds
+        self.fen = bot.send_bot_data(
+            f"make-move/?FEN={self.fen}"
+        )
+
+        self.sounds["move-piece"].play()

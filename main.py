@@ -7,6 +7,9 @@ import threading
 
 
 pygame.init()
+pygame.mixer.init()
+
+PLAY_SOUNDS = True
 
 WIDTH = 800
 HEIGHT = 800
@@ -48,7 +51,7 @@ def create_game():
     bot_1.run_setup()
     bot_2.run_setup()
 
-    return Game(bot_1, bot_2, start_fen)
+    return Game(load_sounds(), PLAY_SOUNDS, bot_1, bot_2, start_fen)
 
 
 def load_pieces():
@@ -72,6 +75,13 @@ def load_pieces():
 
     return lookup
 
+
+def load_sounds():
+    lookup = dict()
+
+    lookup["move-piece"] = pygame.mixer.Sound("sounds/move-self.wav")
+    
+    return lookup
 
 def draw_pieces(fen):
     pieces = load_pieces()
